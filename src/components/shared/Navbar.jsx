@@ -1,12 +1,11 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
 import userPic from "../../assests/user.png";
 import logo from "../../assests/logo.ico";
 
 const Navbar = () => {
-  const { user, logOut } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
 
   const navLink = (
     <>
@@ -18,16 +17,6 @@ const Navbar = () => {
       </li>
     </>
   );
-
-  const handleLogout = () => {
-    logOut()
-      .then(() => {
-        navigate(`/login`);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
 
   return (
     <div className="navbar bg-zinc-200 mb-4 sticky top-0 z-50">
@@ -80,9 +69,9 @@ const Navbar = () => {
           ))}
 
         {user?.email ? (
-          <button onClick={handleLogout} className="btn ml-2">
-            Logout
-          </button>
+          <Link to="/dashboard">
+            <button className="btn ml-2">Dashboard</button>
+          </Link>
         ) : (
           <Link to={`/login`} className="btn">
             Sign in

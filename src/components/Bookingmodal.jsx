@@ -26,16 +26,13 @@ const Bookingmodal = ({ bookedPhone, setBookedPhone }) => {
       email: user.email,
     };
 
-    fetch(
-      "https://used-products-resale-market-server-five.vercel.app/bookings",
-      {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(booking),
-      }
-    )
+    fetch("http://localhost:5000/bookings", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(booking),
+    })
       .then((res) => res.json())
       .then((data) => {
         //console.log(data)
