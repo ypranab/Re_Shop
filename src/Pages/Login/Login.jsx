@@ -25,6 +25,7 @@ const Login = () => {
     logIn(email, password)
       .then((result) => {
         const user = result.user;
+        console.log(user);
         setError("");
         toast.success("User Login Successful", {
           position: "top-right",
@@ -96,11 +97,11 @@ const Login = () => {
                 placeholder="password"
                 className="input input-bordered"
               />
-              <label className="label">
+              {/* <label className="label">
                 <a href="/" className="label-text-alt link link-hover">
                   Forgot password?
                 </a>
-              </label>
+              </label> */}
             </div>
             <div className="form-control mt-6">
               <input type="submit" className="btn btn-primary" value="Login" />

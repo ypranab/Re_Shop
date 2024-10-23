@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaEdit, FaUserShield } from "react-icons/fa";
 import { ImBlocked } from "react-icons/im";
+import { ROUTES } from "../../Routes/baseRoutes";
 
 const AllUsers = () => {
   const [users, setUsers] = useState([]);
@@ -19,7 +20,7 @@ const AllUsers = () => {
   // Fetch all users from the backend
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:5000/users");
+      const response = await fetch(`${ROUTES.SERVER}/users`);
       const data = await response.json();
       setUsers(data);
     } catch (error) {
@@ -41,7 +42,7 @@ const AllUsers = () => {
       };
       console.log({ updatedUser });
 
-      await fetch(`http://localhost:5000/user/${selectedUser._id}`, {
+      await fetch(`${ROUTES.SERVER}/${selectedUser._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +62,7 @@ const AllUsers = () => {
       console.log({ selectedUser });
       const updatedUser = { ...selectedUser, isAdmin: !selectedUser?.isAdmin };
 
-      await fetch(`http://localhost:5000/user/${selectedUser._id}`, {
+      await fetch(`${ROUTES.SERVER}/user/${selectedUser._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -98,7 +99,7 @@ const AllUsers = () => {
         address: formData.address,
       };
 
-      await fetch(`http://localhost:5000/user/${selectedUser._id}`, {
+      await fetch(`${ROUTES.SERVER}/user/${selectedUser._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -1,12 +1,13 @@
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import image from "../../assests/login.svg";
 import { AuthContext } from "../../Provider/AuthProvider";
 import toast from "react-hot-toast";
+import { ROUTES } from "../../Routes/baseRoutes";
 
 const SignUp = () => {
   const { createNewUser, updateUser } = useContext(AuthContext);
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const handleSignUp = (event) => {
     event.preventDefault();
@@ -18,24 +19,52 @@ const SignUp = () => {
     createNewUser(email, password)
       .then((result) => {
         const user = result.user;
-        //console.log("New User", user);
+        console.log("New User", user);
         toast.success("User Registration Successful", {
           position: "top-right",
         });
-        updateUserProfile(name);
+        const userProfile = {
+          displayName: name,
+        };
+        updateUser(userProfile)
+          .then(() => {
+            saveUser(name, email, user.uid);
+          })
+          .catch((error) => console.log(error));
       })
       .catch((error) => console.error(error));
   };
 
-  const updateUserProfile = (name) => {
-    const profile = { displayName: name };
-    updateUser(profile)
-      .then(() => {})
-      .catch((error) => {
-        console.error(error);
+  const saveUser = (name, email, uid) => {
+    const user = {
+      email: email,
+      name: name,
+      photoUrl: "https://i.ibb.co/k6hTYW1/Alien-Dev.jpg",
+      userId: uid,
+      isAdmin: false,
+    };
+    fetch(`${ROUTES.SERVER}/users`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
       });
-    navigate("/");
   };
+
+  // const updateUserProfile = (name) => {
+  //   const profile = { displayName: name };
+  //   updateUser(profile)
+  //     .then(() => {})
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  //   navigate("/");
+  // };
 
   return (
     <div className="hero min-h-screen bg-base-200">

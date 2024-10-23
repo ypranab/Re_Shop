@@ -1,9 +1,12 @@
 import { useContext, useState } from "react";
 import { FiEdit } from "react-icons/fi"; // Importing react-icon
 import { AuthContext } from "../../Provider/AuthProvider";
+//import useIsAdmin from "../../hooks/useIsAdmin";
+import { ROUTES } from "../../Routes/baseRoutes";
 
 const Profile = () => {
   const { user } = useContext(AuthContext);
+  //const [isAdmin, dbUser] = useIsAdmin(user.uid);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     displayName: "",
@@ -24,7 +27,7 @@ const Profile = () => {
       };
 
       // Make API call to update user information
-      const response = await fetch(`http://localhost:5000/user/${user._id}`, {
+      const response = await fetch(`${ROUTES.SERVER}/user/${user._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

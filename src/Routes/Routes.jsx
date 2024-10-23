@@ -5,10 +5,13 @@ import Login from "../Pages/Login/Login";
 import SignUp from "../Pages/Login/SignUp";
 import PrivateRoute from "./PrivateRoute";
 import Products from "../Pages/Products";
-import PhoneDetails from "../Pages/PhoneDetails";
 import Profile from "../Pages/dashboardPages/Profile";
 import AllUsers from "../Pages/dashboardPages/AllUsers";
 import DashboardLayout from "../Layout/DashboardLayout";
+import { ROUTES } from "./baseRoutes";
+import AddPhones from "../Pages/dashboardPages/AddPhones";
+import Bookings from "../Pages/dashboardPages/Bookings";
+import Phones from "../Pages/Phones";
 
 export const router = createBrowserRouter([
   {
@@ -18,7 +21,7 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>,
-        loader: () => fetch("http://localhost:5000/brands"),
+        loader: () => fetch(`${ROUTES.SERVER}/brands`),
       },
       {
         path: "/login",
@@ -35,23 +38,27 @@ export const router = createBrowserRouter([
             <Products></Products>
           </PrivateRoute>
         ),
-        loader: () => fetch("http://localhost:5000/products"),
+        loader: () => fetch(`${ROUTES.SERVER}/products`),
       },
       {
         path: "/category/:brand",
         element: (
           <PrivateRoute>
-            <PhoneDetails></PhoneDetails>
+            <Phones></Phones>
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/category/${params.brand}`),
+          fetch(`${ROUTES.SERVER}/category/${params.brand}`),
       },
     ],
   },
   {
     path: "/dashboard",
-    element: <DashboardLayout></DashboardLayout>,
+    element: (
+      <PrivateRoute>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "",
@@ -60,6 +67,16 @@ export const router = createBrowserRouter([
       {
         path: "allUsers",
         element: <AllUsers />,
+      },
+      {
+        path: "products",
+        element: <AddPhones></AddPhones>,
+      },
+      {
+        path: "bookings/:email",
+        element: <Bookings></Bookings>,
+        loader: ({ params }) =>
+          fetch(`${ROUTES.SERVER}/bookings/${params.email}`),
       },
       {
         path: "profile",

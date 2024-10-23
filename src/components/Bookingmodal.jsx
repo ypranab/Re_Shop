@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { toast } from "react-hot-toast";
 import { AuthContext } from "../Provider/AuthProvider";
+import { ROUTES } from "../Routes/baseRoutes";
 
 // eslint-disable-next-line react/prop-types
 const Bookingmodal = ({ bookedPhone, setBookedPhone }) => {
@@ -26,7 +27,7 @@ const Bookingmodal = ({ bookedPhone, setBookedPhone }) => {
       email: user.email,
     };
 
-    fetch("http://localhost:5000/bookings", {
+    fetch(`${ROUTES.SERVER}/bookings`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -64,7 +65,7 @@ const Bookingmodal = ({ bookedPhone, setBookedPhone }) => {
             <input
               name="name"
               type="text"
-              defaultValue={user.displayName}
+              defaultValue={user.name}
               disabled
               placeholder="Name"
               className="input input-bordered w-full"

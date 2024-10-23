@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
+import { ROUTES } from "../Routes/baseRoutes";
 
-const useIsAdmin = (email) => {
-  console.log(email);
-  const [isAdmin, setIsAmdin] = useState(false);
+const useIsAdmin = (uid) => {
+  const [isAdmin, setIsAdmin] = useState(false);
   const [adminLoading, setAdminLoading] = useState(true);
+  const [dbUser, setDbUser] = useState([]);
+
   useEffect(() => {
-    fetch(`http://localhost:5000/user/${email}`)
+    fetch(`${ROUTES.SERVER}/user/${uid}`)
       .then((res) => res.json())
       .then((data) => {
-        if (data?.role == "admin") {
-          setIsAmdin(true);
-        }
+        setIsAdmin(data.isAdmin);
         setAdminLoading(false);
+        setDbUser(data);
       });
-  }, [email]);
-  return [isAdmin, adminLoading];
+  }, [uid]);
+
+  return [isAdmin, dbUser, adminLoading];
 };
 
 export default useIsAdmin;

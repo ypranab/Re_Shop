@@ -9,6 +9,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import app from "../firebase/firebase.config";
+import { ROUTES } from "../Routes/baseRoutes";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
@@ -45,7 +46,26 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      console.log(currentUser + "USER");
+      if (currentUser?.email) {
+        fetch(`${ROUTES.SERVER}/user/${currentUser?.uid}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to fetch user data.");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            //console.log(data);
+            setUser(data);
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error.message);
+          });
+      } else {
+        setUser(null);
+      }
+      //setUser(currentUser);
       setLoading(false);
       //console.log(user);
     });
